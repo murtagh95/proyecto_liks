@@ -19,15 +19,15 @@ router.post('/add', async (req, res) => {
     // Agrego la información a la base de datos
     await pool.query('INSERT INTO links set ?', [newLink]);
 
-    res.send('Received');
+    res.redirect('/links');  //Al finalizar enviamos la ruta links
 })
 
 router.get('/', async (req, res) => {
     const links = await pool.query('SELECT * FROM links');
     console.log(links);
 
-    res.send('Listas iran aquí');
-
+    // Renderizo el documento html/hbs y le envio como JSON lo devuelto por la BD
+    res.render('links/list', { links });
 });
 
 module.exports = router
