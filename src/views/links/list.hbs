@@ -14,11 +14,21 @@
                         </a>
                         <p class="m-2 p-5"> {{description}} </p>
                         <p class="m-2 p-1"> {{ timeago created_at }} </p>
-                        <a href="" class="btn btn-danger">Delete Link</a>
+                        <a href="/links/delete/{{id}}" class="btn btn-danger">Delete Link</a>
                         <a href="" class="btn btn-secondary">Edit</a>
                     </div>
                 </div>
             </div>
+        {{!-- Si no encuentra ningun elemento en el array --}}
+        {{else}}
+        
+            <div class="col-md-4 mx-auto">
+                <div class="card card-body text-center">
+                    <p>There aren't links saved yet.</p>
+                    <a href="/links/add" class="btn btn-success btn-block">Create One!</a>
+                </div>
+            </div>
+
 
         {{/each}}
 

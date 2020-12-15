@@ -30,4 +30,14 @@ router.get('/', async (req, res) => {
     res.render('links/list', { links });
 });
 
+router.get('/delete/:id', async (req, res) => {
+    // Guardo en una constante el valor de id pasado por parametro  
+    const {id} = req.params;
+    // Realizo una QUERY a la BD para eliminar dicho id
+    await pool.query('DELETE FROM links WHERE ID = ?', [id]);
+
+    res.redirect('/links');
+})
+
+
 module.exports = router
