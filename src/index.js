@@ -2,7 +2,10 @@ const express = require('express');
 const morgan = require('morgan');
 const exphbs = require('express-handlebars');
 const path = require('path');
-
+const flash = require('connect-flash');
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session');
+const {database} = require('./keys');
 // IITIALIZATIONS
 const app = express();
 
@@ -20,13 +23,20 @@ app.engine('.hbs', exphbs({
 app.set('view engine', '.hbs');
 
 // MIDDLEWARES
+app.use(session({  // Configuro el guardado de seción
+    secret: 'faztmysqlnodesession',
+    resave: false,
+    saveUninitialized: false,
+    store:  new MySQLStore(database)
+}));
+app.use(flash());
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended: false}));  // Aceptamos datos desde los formularios
 app.use(express.json());
 
 // GLOBAL VARIABLES
 app.use((req, res, next) => {
-
+    app.locals.success = req.flash('success');
     next();
 });
 

@@ -20,6 +20,9 @@ router.post('/add', async (req, res) => {
     // Agrego la información a la base de datos
     await pool.query('INSERT INTO links set ?', [newLink]);
 
+    // Utilizo flash para mostrar un mensaje
+    req.flash('success', 'Link saved successfully');
+
     res.redirect('/links');  //Al finalizar enviamos la ruta links
 })
 
@@ -38,6 +41,7 @@ router.get('/delete/:id', async (req, res) => {
     // Realizo una QUERY a la BD para eliminar dicho id
     await pool.query('DELETE FROM links WHERE ID = ?', [id]);
 
+    req.flash('success', 'Link Removed successfully');
     res.redirect('/links');
 })
 
@@ -47,6 +51,7 @@ router.get('/edit/:id', async (req, res) => {
     const {id} = req.params;
     // Pido a la BD los datos almacenados en el ID enviado por la url
     const links = await pool.query('SELECT * FROM links WHERE id = ?', [id]);
+    
     // Le envio los datos a la plantilla para poder ser editados
     res.render('links/edit', { link: links[0] });
 })
@@ -60,9 +65,11 @@ router.post('/edit/:id', async (req, res) => {
         url,
         description,
     };
-    console.log(newLink);
     // Actualizo la base de datos
     await pool.query('UPDATE links set ? WHERE id = ?', [newLink, id]);
+    
+    req.flash('success', 'Links Updated successfully');
+    
     res.redirect('/links');
 
 })
