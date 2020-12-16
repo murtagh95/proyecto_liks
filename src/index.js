@@ -6,8 +6,11 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session');
 const {database} = require('./keys');
+const passport = require('passport');
+
 // IITIALIZATIONS
 const app = express();
+require('./lib/passport');
 
 
 // SETTINGS
@@ -33,6 +36,10 @@ app.use(flash());
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended: false}));  // Aceptamos datos desde los formularios
 app.use(express.json());
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 
 // GLOBAL VARIABLES
 app.use((req, res, next) => {
